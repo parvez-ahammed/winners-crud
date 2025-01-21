@@ -1,1 +1,1 @@
-# Money Manager Server
+# News Manager Server

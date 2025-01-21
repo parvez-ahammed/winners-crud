@@ -1,1 +1,1 @@
-# Money Manager
+# News Manager

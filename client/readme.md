@@ -1,1 +1,1 @@
-# Money Manger Client
+# News Manager Client
