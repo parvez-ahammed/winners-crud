@@ -1,5 +1,5 @@
-import { AddNews } from '@/features/news/components/AddNews';
-import NewsList from '@/features/news/components/NewsList';
+import { AddNews } from '@/features/winners/components/AddWinner';
+import NewsList from '@/features/winners/components/WinnerList';
 import { Box, VStack } from '@chakra-ui/react';
 
 export const NewsPage = () => {
