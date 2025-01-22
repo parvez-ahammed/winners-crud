@@ -11,9 +11,9 @@ export const NewsPage = () => {
         <Box w="full" border={1} p={4} mb={4} borderRadius="lg" borderWidth={2} boxShadow="sm">
           <AddNews />
         </Box>
+        <WinnersList gameName="FoosBall" winnerData={foosBallWinner} />
         <WinnersList gameName="UNO" winnerData={unoWinners} />
         <WinnersList gameName="Chess" winnerData={chessWinners} />
-        <WinnersList gameName="FoosBall" winnerData={foosBallWinner} />
         <WinnersList gameName="Table Tennis" winnerData={tableTennisWinners} />
       </VStack>
     </Box>

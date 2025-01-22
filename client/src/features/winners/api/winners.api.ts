@@ -1,1 +1,5 @@
-export const newsApi = {};
+import { dummyWinners } from '../constants/winners.constant';
+
+export const winnersApi = () => {
+  return dummyWinners;
+};
