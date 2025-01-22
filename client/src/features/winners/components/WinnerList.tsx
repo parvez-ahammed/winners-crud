@@ -20,7 +20,7 @@ export const WinnersList: React.FC<WinnersListProps> = ({ gameName, winnerData }
           <NativeSelectField placeholder="Select Season" name="season" items={['2024', '2025']} />
         </NativeSelectRoot>
       </HStack>
-      <Table.Root size="sm">
+      <Table.Root size="sm" variant={'line'} interactive>
         <Table.Header>
           <Table.Row>
             <Table.ColumnHeader width="20%" textAlign="center">
