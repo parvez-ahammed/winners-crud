@@ -7,6 +7,7 @@ export const dummyWinners: Winner[] = [
     game: 'Chess',
     position: 'Champion',
     teamMember1: 'Alice',
+    teamMember2: 'Bob',
   },
   {
     id: '2',
@@ -14,6 +15,7 @@ export const dummyWinners: Winner[] = [
     game: 'UNO',
     position: '1st Runners Up',
     teamMember1: 'Bob',
+    teamMember2: 'Charlie',
   },
   {
     id: '3',
