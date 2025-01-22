@@ -3,23 +3,14 @@ import { Button, Input, Stack } from '@chakra-ui/react';
 import { Field } from '@/components/ui/field';
 import { Fieldset } from '@chakra-ui/react';
 import { NativeSelectField, NativeSelectRoot } from '@/components/ui/native-select';
-
-interface WinnerData {
-  season?: string;
-  game?: string;
-  position?: string;
-  name?: string;
-  teamMember1?: string;
-  teamMember2?: string;
-}
+import { Winner } from '@/features/winners/interface/winner.interface';
 
 export const AddNews: React.FC = () => {
   const [selectedGame, setSelectedGame] = useState<string>('');
-  const [formData, setFormData] = useState<WinnerData>({
+  const [formData, setFormData] = useState<Winner>({
     season: '',
     game: '',
     position: '',
-    name: '',
     teamMember1: '',
     teamMember2: '',
   });
@@ -87,7 +78,7 @@ export const AddNews: React.FC = () => {
 
           {['Chess', 'UNO'].includes(selectedGame) ? (
             <Field label="Name" required>
-              <Input name="name" value={formData.name} onChange={handleInputChange} />
+              <Input name="name" value={formData.teamMember1} onChange={handleInputChange} />
             </Field>
           ) : (
             <Stack direction="row" gap={4}>
@@ -101,7 +92,7 @@ export const AddNews: React.FC = () => {
           )}
         </Fieldset.Content>
 
-        <Button type="submit" alignSelf="flex-start">
+        <Button type="submit" alignSelf="flex-end">
           Submit
         </Button>
       </Fieldset.Root>

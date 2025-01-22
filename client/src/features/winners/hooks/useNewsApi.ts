@@ -1,4 +1,4 @@
-import { newsData } from '../constants/news-data.constant';
+import { newsData } from '../constants/winners.constant';
 
 export const useNewsApi = () => {
   return {
