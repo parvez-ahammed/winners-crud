@@ -4,8 +4,9 @@ import { Field } from '@/components/ui/field';
 import { Fieldset } from '@chakra-ui/react';
 import { NativeSelectField, NativeSelectRoot } from '@/components/ui/native-select';
 import { Winner } from '@/features/winners/interface/winner.interface';
+import { dummyWinners } from '../constants/winners.constant';
 
-export const AddNews: React.FC = () => {
+export const AddWinner: React.FC = () => {
   const [selectedGame, setSelectedGame] = useState<string>('');
   const [formData, setFormData] = useState<Winner>({
     season: '',
@@ -34,6 +35,22 @@ export const AddNews: React.FC = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     console.log('Form Data:', formData);
+    formData.id = (dummyWinners.length + 1).toString();
+    dummyWinners.push(formData);
+    console.log('Winners:', dummyWinners);
+
+    setFormData({
+      season: '',
+      game: '',
+      position: '',
+      teamMember1: '',
+      teamMember2: '',
+    });
+
+    // also reset the Select dropdown
+    setSelectedGame('');
+
+    alert('Winner added successfully');
   };
 
   return (

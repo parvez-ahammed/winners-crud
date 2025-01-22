@@ -5,6 +5,7 @@ import { Box, HStack, Table, Text, Image } from '@chakra-ui/react';
 import { Winner } from '../interface/winner.interface';
 import { isSinglePersonGame } from '@/helpers/utility';
 import nodata from '@/assets/images/no-data.svg';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 
 interface WinnersListProps {
   gameName: string;
@@ -12,7 +13,7 @@ interface WinnersListProps {
 }
 export const WinnersList: React.FC<WinnersListProps> = ({ gameName, winnerData }) => {
   return (
-    <Box w="full" border={1} p={4} borderRadius="lg" borderWidth={2} boxShadow="sm">
+    <Box w="full" border={1} p={4} borderRadius="lg" borderWidth={2} boxShadow="lg">
       <HStack justify={'space-between'} mb={4}>
         <Text fontSize={'2xl'}>{gameName}</Text>
         <NativeSelectRoot w="auto">
@@ -22,9 +23,24 @@ export const WinnersList: React.FC<WinnersListProps> = ({ gameName, winnerData }
       <Table.Root size="sm">
         <Table.Header>
           <Table.Row>
-            <Table.ColumnHeader>Position</Table.ColumnHeader>
-            {isSinglePersonGame(gameName) ? <Table.ColumnHeader>Name</Table.ColumnHeader> : <Table.ColumnHeader>Team Member 1</Table.ColumnHeader>}
-            {isSinglePersonGame(gameName) ? undefined : <Table.Cell>Team Member 2</Table.Cell>}
+            <Table.ColumnHeader width="20%" textAlign="center">
+              Position
+            </Table.ColumnHeader>
+            {isSinglePersonGame(gameName) ? (
+              <Table.ColumnHeader width="70%" textAlign="center">
+                Name
+              </Table.ColumnHeader>
+            ) : (
+              <Table.ColumnHeader width="35%" textAlign="center">
+                Team Member 1
+              </Table.ColumnHeader>
+            )}
+            {isSinglePersonGame(gameName) ? undefined : (
+              <Table.Cell width="35%" textAlign="center">
+                Team Member 2
+              </Table.Cell>
+            )}
+            <Table.ColumnHeader width="20%">Action</Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -40,9 +56,22 @@ export const WinnersList: React.FC<WinnersListProps> = ({ gameName, winnerData }
           )}
           {winnerData.map((winners) => (
             <Table.Row key={winners.id}>
-              <Table.Cell>{winners.position}</Table.Cell>
-              <Table.Cell>{winners.teamMember1}</Table.Cell>
-              {isSinglePersonGame(gameName) ? undefined : <Table.Cell>{winners.teamMember2}</Table.Cell>}
+              <Table.Cell textAlign="center">{winners.position}</Table.Cell>
+              <Table.Cell width="35%" textAlign="center">
+                {winners.teamMember1}
+              </Table.Cell>
+              {isSinglePersonGame(gameName) ? undefined : (
+                <Table.Cell width="35%" textAlign="center">
+                  {winners.teamMember2}
+                </Table.Cell>
+              )}
+
+              <Table.Cell width="20%" textAlign={'center'}>
+                <HStack gap={4}>
+                  <FaEdit />
+                  <FaTrash />
+                </HStack>
+              </Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>
