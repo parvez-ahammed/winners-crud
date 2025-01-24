@@ -1,12 +1,7 @@
 {
-    "singleQuote": true,
-    "trailingComma": "all",
-    "printWidth": 160,
-    "importOrder": [
-      "^react",
-      "^@?\\w",
-      "^[./]",
-      "^@/components/(.*)$",
-      "^[./](.*).(scss|css)$"
-    ]
-  }
+  "singleQuote": true,
+  "trailingComma": "all",
+  "printWidth": 160,
+  "importOrder": ["^react", "^@?\\w", "^[./]", "^@/components/(.*)$", "^[./](.*).(scss|css)$"],
+  "importOrderSeparation": true
+}
