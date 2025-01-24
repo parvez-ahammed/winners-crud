@@ -19,4 +19,4 @@ COPY client/ /app/client/
 RUN npm run build
 
 # Stage 3: Runtime Stage
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "dev"]
