@@ -57,7 +57,7 @@ export const AddWinner: React.FC = () => {
       <form onSubmit={handleSubmit} style={{ width: '100%' }}>
         <Fieldset.Root size="lg" maxW="full" w="full">
           <Stack>
-            <Fieldset.Legend>Winners Details</Fieldset.Legend>
+            <Fieldset.Legend color={'black'}>Winners Details</Fieldset.Legend>
             <Fieldset.HelperText>Please provide details about the winners</Fieldset.HelperText>
           </Stack>
 
@@ -109,7 +109,7 @@ export const AddWinner: React.FC = () => {
             )}
           </Fieldset.Content>
 
-          <Button type="submit" alignSelf="flex-end">
+          <Button type="submit" alignSelf="flex-end" color={'white'} bg={'black'} _hover={{ bg: 'blue.500' }}>
             Submit
           </Button>
         </Fieldset.Root>
