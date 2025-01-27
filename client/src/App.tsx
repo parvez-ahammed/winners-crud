@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import { useColorMode } from './components/ui/color-mode';
 import { AddWinner } from './features/winners/components/AddWinner';
-import { WinnersPage } from './pages/NewsPage';
+import { WinnersPage } from './pages/WinnersPage';
 import { AppProvider } from './providers/AppProvider';
 import { RedirectToWinners } from './pages/RedirectToWinners';
 
