@@ -42,12 +42,12 @@ services:
     container_name: winner-crud-server
     build:
       context: .
-      dockerfile: ./server/Dockerfile # Correct path to your server Dockerfile
+      dockerfile: ./server/Dockerfile
     working_dir: /app
     volumes:
-      - ./server:/app # Mount the server directory for live code changes
+      - ./server:/app
     ports:
-      - '4000:4000' # Expose the Go server port
+      - '4000:4000'
     environment:
       - GO_ENV=development
     command: air

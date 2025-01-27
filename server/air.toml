@@ -3,7 +3,8 @@ tmp_dir = "tmp"
 
 [build]
     bin = "main"
-    cmd = "go build -o {{.Output}} {{.Input}}"
+    cmd = "go build -o ./tmp/main ./src/cmd"
     exclude = ["tmp/*" ,  "client/*"]
     include = ["**/*.go"]
     ignore = ["tmp/*" ]
+    poll = true

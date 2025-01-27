@@ -1,32 +1,18 @@
-# Stage 1: Build Stage for Dependencies
+# Stage 1: Build the Go app with Air
 FROM golang:1.23-alpine AS builder
 
-# Set working directory to /app
+# Set the working directory in the container
 WORKDIR /app
 
-# Copy Go module files (go.mod and go.sum)
-COPY server/go.mod server/go.sum /app/
+# Install Air for live reloading (updated to the new repo)
+RUN go install github.com/air-verse/air@latest
 
-# Install Go dependencies
+# Copy Go module files and install dependencies
+COPY server/go.mod /app/server/go.sum ./
 RUN go mod tidy
 
-# Copy Go source files
+# Copy the Go source code to the container
 COPY server/ /app/
 
-# Stage 2: Build the Go application
-RUN go build -o /app/bin/server /app/main.go  # Change the path to your main file if needed
-
-# Stage 3: Runtime Stage
-FROM alpine:latest
-
-# Set working directory to /app
-WORKDIR /app
-
-# Copy the Go binary from the build stage
-COPY --from=builder /app/bin/server /app/
-
-# Expose the application port
-EXPOSE 4000
-
-# Set the default command to run the Go application
-CMD ["/app/server"]
+# Stage 2: Run the Go app with Air
+CMD ["air"]
