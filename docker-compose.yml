@@ -3,6 +3,7 @@ services:
     container_name: winner-crud-client
     build:
       context: .
+      dockerfile: /client/Dockerfile
     working_dir: /app/client
     ports:
       - '5173:5173'
@@ -36,6 +37,20 @@ services:
       - winner-crud-net
     ports:
       - '8080:8080'
+
+  server:
+    container_name: winner-crud-server
+    build:
+      context: .
+      dockerfile: ./server/Dockerfile # Correct path to your server Dockerfile
+    working_dir: /app
+    volumes:
+      - ./server:/app # Mount the server directory for live code changes
+    ports:
+      - '4000:4000' # Expose the Go server port
+    environment:
+      - GO_ENV=development
+    command: air
 
 networks:
   winner-crud-net:
