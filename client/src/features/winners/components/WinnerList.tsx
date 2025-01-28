@@ -20,33 +20,35 @@ export const WinnersList: React.FC<WinnersListProps> = ({ gameName, winnerData }
           <NativeSelectField placeholder="Select Season" name="season" items={['2024', '2025']} />
         </NativeSelectRoot>
       </HStack>
-      <Table.Root size="sm" variant={'line'} interactive>
+      <Table.Root size="sm" variant={'line'} interactive bg={'white'}>
         <Table.Header>
           <Table.Row>
-            <Table.ColumnHeader width="20%" textAlign="center">
+            <Table.ColumnHeader width="20%" textAlign="center" bg={'white'} color={'black'}>
               Position
             </Table.ColumnHeader>
             {isSinglePersonGame(gameName) ? (
-              <Table.ColumnHeader width="70%" textAlign="center">
+              <Table.ColumnHeader width="70%" textAlign="center" bg={'white'} color={'black'}>
                 Name
               </Table.ColumnHeader>
             ) : (
-              <Table.ColumnHeader width="35%" textAlign="center">
+              <Table.ColumnHeader width="35%" textAlign="center" bg={'white'} color={'black'}>
                 Team Member 1
               </Table.ColumnHeader>
             )}
             {isSinglePersonGame(gameName) ? undefined : (
-              <Table.Cell width="35%" textAlign="center">
+              <Table.Cell width="35%" textAlign="center" bg={'white'} color={'black'}>
                 Team Member 2
               </Table.Cell>
             )}
-            <Table.ColumnHeader width="20%">Action</Table.ColumnHeader>
+            <Table.ColumnHeader width="20%" bg={'white'} color={'black'}>
+              Action
+            </Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
         <Table.Body>
           {winnerData.length === 0 && (
             <Table.Row>
-              <Table.Cell colSpan={isSinglePersonGame(gameName) ? 2 : 3} textAlign="center">
+              <Table.Cell colSpan={isSinglePersonGame(gameName) ? 2 : 3} textAlign="center" bg={'white'} color={'black'}>
                 <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column">
                   <Image src={nodata} alt="No data" height="200px" />
                   <Text color={'gray.400'}>No winners to display</Text>
@@ -56,17 +58,19 @@ export const WinnersList: React.FC<WinnersListProps> = ({ gameName, winnerData }
           )}
           {winnerData.map((winners) => (
             <Table.Row key={winners.id}>
-              <Table.Cell textAlign="center">{winners.position}</Table.Cell>
-              <Table.Cell width="35%" textAlign="center">
+              <Table.Cell textAlign="center" bg={'white'} color={'black'}>
+                {winners.position}
+              </Table.Cell>
+              <Table.Cell width="35%" textAlign="center" bg={'white'} color={'black'}>
                 {winners.teamMember1}
               </Table.Cell>
               {isSinglePersonGame(gameName) ? undefined : (
-                <Table.Cell width="35%" textAlign="center">
+                <Table.Cell width="35%" textAlign="center" bg={'white'} color={'black'}>
                   {winners.teamMember2}
                 </Table.Cell>
               )}
 
-              <Table.Cell width="20%" textAlign={'center'}>
+              <Table.Cell width="20%" textAlign={'center'} bg={'white'} color={'black'}>
                 <HStack gap={4}>
                   <FaEdit />
                   <FaTrash />

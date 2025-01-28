@@ -8,7 +8,7 @@ export const WinnersPage = () => {
     <Box w="full" h="full" gap={4}>
       <VStack gap={4} width={{ base: '90%', md: '80%', lg: '60%' }} margin="auto">
         <Box w="full" textAlign="right">
-          <Button colorScheme="black" w="full" onClick={() => (window.location.href = '/winners/add')}>
+          <Button w="full" onClick={() => (window.location.href = '/winners/adds')} bg={'white'} shadow={'sm'}>
             Add Winner
           </Button>
         </Box>
