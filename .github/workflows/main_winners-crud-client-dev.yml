@@ -28,8 +28,8 @@ jobs:
           npm run build --if-present
           npm run test --if-present
 
-      - name: Zip client folder for deployment
-        run: zip -r release.zip ./client # Specify only the /client folder
+      - name: Zip dist folder for deployment
+        run: zip -r release.zip ./client/dist # Only zip the /client/dist folder
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -68,4 +68,4 @@ jobs:
         with:
           app-name: 'winners-crud-client-dev'
           slot-name: 'Production'
-          package: ./client # Specify the /client folder to deploy
+          package: ./client/dist # Specify the /client folder to deploy
