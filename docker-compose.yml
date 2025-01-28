@@ -41,19 +41,17 @@ services:
   # Related issue:
   # https://github.com/air-verse/air/issues/274
   # https://stackoverflow.com/questions/70321633/hot-reload-not-working-in-docker-with-golang-github-com-cosmtrek-air
-  # server:
-  #   container_name: winner-crud-server
-  #   build:
-  #     context: .
-  #     dockerfile: ./server/Dockerfile
-  #   working_dir: /app
-  #   volumes:
-  #     - ./server:/app
-  #   ports:
-  #     - '4000:4000'
-  #   environment:
-  #     - GO_ENV=development
-  #   command: air
+  server:
+    container_name: winner-crud-server
+    build:
+      context: .
+      dockerfile: ./server/Dockerfile
+    working_dir: /app
+    volumes:
+      - ./server:/app
+    ports:
+      - '4000:4000'
+    command: air
 
 networks:
   winner-crud-net:

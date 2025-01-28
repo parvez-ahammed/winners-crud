@@ -13,6 +13,10 @@ func SetupApp() *fiber.App {
 		return c.Status(200).JSON(fiber.Map{"msg": "Welcome to the Winners API!"})
 	})
 
+	app.Get("/", func(c *fiber.Ctx) error {
+		return c.Status(200).JSON(fiber.Map{"msg": "Welcome to the Winners API ROOT! "})
+	})
+
 	routes.RegisterRoutes(app)
 
 	return app
