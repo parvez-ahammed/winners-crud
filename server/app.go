@@ -2,11 +2,20 @@ package main
 
 import (
 	"github.com/gofiber/fiber/v2"
+	database "github.com/piru72/winners-crud/server/config"
 	"github.com/piru72/winners-crud/server/routes"
 )
 
 func SetupApp() *fiber.App {
 
+	// Initialize the database
+	database.Connect()
+
+	// Run Migrations
+	//database.RunMigrations(db)
+
+	// Seed Data
+	// winner.SeedWinner(db)
 	app := fiber.New()
 
 	app.Get("/api/v1/", func(c *fiber.Ctx) error {

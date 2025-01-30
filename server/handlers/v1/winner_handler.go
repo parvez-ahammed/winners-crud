@@ -2,19 +2,25 @@ package handlers
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/piru72/winners-crud/server/database/entities"
+	"github.com/piru72/winners-crud/server/database/models"
 	"github.com/piru72/winners-crud/server/services"
 	"github.com/piru72/winners-crud/server/utils"
 )
 
 func GetWinners(c *fiber.Ctx) error {
+	// Retrieve query parameters
 	season := c.Query("season")
 	game := c.Query("game")
 	position := c.Query("position")
 	teamMember := c.Query("teamMember")
 
-	filtered := services.GetWinnersService(season, game, position, teamMember)
+	// Fetch filtered winners from the service
+	filtered, err := services.GetWinnersService(season, game, position, teamMember)
+	if err != nil {
+		return utils.SendApiResponse(c, false, 500, "Error fetching winners", nil, err.Error())
+	}
 
+	// Return the filtered winners in the response
 	return utils.SendApiResponse(c, true, 200, "Winners fetched successfully", filtered, nil)
 }
 
@@ -30,7 +36,7 @@ func GetWinnerByID(c *fiber.Ctx) error {
 }
 
 func CreateWinner(c *fiber.Ctx) error {
-	var newWinner entities.Winner
+	var newWinner models.Winner
 	if err := c.BodyParser(&newWinner); err != nil {
 		return utils.SendApiResponse(c, false, 400, "Invalid input", nil, err.Error())
 	}
@@ -41,7 +47,7 @@ func CreateWinner(c *fiber.Ctx) error {
 
 func UpdateWinner(c *fiber.Ctx) error {
 	id := c.Params("id")
-	var updatedWinner entities.Winner
+	var updatedWinner models.Winner
 	if err := c.BodyParser(&updatedWinner); err != nil {
 		return utils.SendApiResponse(c, false, 400, "Invalid input", nil, err.Error())
 	}

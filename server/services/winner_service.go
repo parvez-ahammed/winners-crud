@@ -3,26 +3,26 @@ package services
 
 import (
 	"github.com/google/uuid"
-	"github.com/piru72/winners-crud/server/database/entities"
+	"github.com/piru72/winners-crud/server/database/models"
 	"github.com/piru72/winners-crud/server/database/repositories"
 )
 
-var winners = repositories.GetWinners()
-
-func GetWinnersService(season, game, position, teamMember string) []entities.Winner {
-	var filtered []entities.Winner
-	for _, w := range winners {
-		if (season == "" || w.Season == season) &&
-			(game == "" || w.Game == game) &&
-			(position == "" || w.Position == position) &&
-			(teamMember == "" || w.TeamMember1 == teamMember || w.TeamMember2 == teamMember) {
-			filtered = append(filtered, w)
-		}
-	}
-	return filtered
+var winners = []models.Winner{
+	{ID: "1", Season: "2024", Game: "Chess", Position: "Champion", TeamMember1: "Alice", TeamMember2: "Bob"},
+	{ID: "2", Season: "2024", Game: "UNO", Position: "1st Runners Up", TeamMember1: "Bob", TeamMember2: "Charlie"},
+	{ID: "3", Season: "2025", Game: "FoosBall", Position: "2nd Runners Up", TeamMember1: "Charlie", TeamMember2: "Dave"},
 }
 
-func GetWinnerByIDService(id string) *entities.Winner {
+func GetWinnersService(season, game, position, teamMember string) ([]models.Winner, error) {
+	// Get the winners from the repository
+	winners, err := repositories.GetWinners(season, game, position, teamMember)
+	if err != nil {
+		return nil, err
+	}
+	return winners, nil
+}
+
+func GetWinnerByIDService(id string) *models.Winner {
 	for _, w := range winners {
 		if w.ID == id {
 			return &w
@@ -31,13 +31,13 @@ func GetWinnerByIDService(id string) *entities.Winner {
 	return nil
 }
 
-func CreateWinnerService(newWinner *entities.Winner) entities.Winner {
+func CreateWinnerService(newWinner *models.Winner) models.Winner {
 	newWinner.ID = uuid.New().String()
 	winners = append(winners, *newWinner)
 	return *newWinner
 }
 
-func UpdateWinnerService(id string, updatedWinner *entities.Winner) *entities.Winner {
+func UpdateWinnerService(id string, updatedWinner *models.Winner) *models.Winner {
 	for i, w := range winners {
 		if w.ID == id {
 			updatedWinner.ID = w.ID
@@ -48,7 +48,7 @@ func UpdateWinnerService(id string, updatedWinner *entities.Winner) *entities.Wi
 	return nil
 }
 
-func PartialUpdateWinnerService(id string, partialWinner map[string]interface{}) *entities.Winner {
+func PartialUpdateWinnerService(id string, partialWinner map[string]interface{}) *models.Winner {
 	for i, w := range winners {
 		if w.ID == id {
 			if val, ok := partialWinner["season"]; ok {
