@@ -8,31 +8,25 @@ import (
 )
 
 func GetWinners(c *fiber.Ctx) error {
-	// Retrieve query parameters
 	season := c.Query("season")
 	game := c.Query("game")
 	position := c.Query("position")
 	teamMember := c.Query("teamMember")
-
-	// Fetch filtered winners from the service
-	filtered, err := services.GetWinnersService(season, game, position, teamMember)
+	filtered, err := services.GetWinners(season, game, position, teamMember)
 	if err != nil {
 		return utils.SendApiResponse(c, false, 500, "Error fetching winners", nil, err.Error())
 	}
 
-	// Return the filtered winners in the response
 	return utils.SendApiResponse(c, true, 200, "Winners fetched successfully", filtered, nil)
 }
 
 func GetWinnerByID(c *fiber.Ctx) error {
 	id := c.Params("id")
-	winner := services.GetWinnerByIDService(id)
-	if winner == nil {
-
-		return utils.SendApiResponse(c, false, 404, "Winner not found", nil, "Winner not found")
+	winner, err := services.GetWinnerByID(id)
+	if err != nil {
+		return utils.SendApiResponse(c, false, 404, "Winner not found", nil, err.Error())
 	}
-
-	return utils.SendApiResponse(c, true, 200, "Winner found", winner, nil)
+	return utils.SendApiResponse(c, true, 200, "Winner fetched successfully", winner, nil)
 }
 
 func CreateWinner(c *fiber.Ctx) error {
@@ -41,7 +35,7 @@ func CreateWinner(c *fiber.Ctx) error {
 		return utils.SendApiResponse(c, false, 400, "Invalid input", nil, err.Error())
 	}
 
-	createdWinner := services.CreateWinnerService(&newWinner)
+	createdWinner := services.CreateWinner(&newWinner)
 	return utils.SendApiResponse(c, true, 201, "Winner created successfully", createdWinner, nil)
 }
 
@@ -52,7 +46,7 @@ func UpdateWinner(c *fiber.Ctx) error {
 		return utils.SendApiResponse(c, false, 400, "Invalid input", nil, err.Error())
 	}
 
-	updated := services.UpdateWinnerService(id, &updatedWinner)
+	updated := services.UpdateWinner(id, &updatedWinner)
 	if updated == nil {
 		return utils.SendApiResponse(c, false, 404, "Winner not found", nil, "Winner not found")
 	}
@@ -67,7 +61,7 @@ func PartialUpdateWinner(c *fiber.Ctx) error {
 		return utils.SendApiResponse(c, false, 400, "Invalid input", nil, err.Error())
 	}
 
-	updated := services.PartialUpdateWinnerService(id, partialWinner)
+	updated := services.PartialUpdateWinner(id, partialWinner)
 	if updated == nil {
 		return utils.SendApiResponse(c, false, 404, "Winner not found", nil, "Winner not found")
 	}
@@ -76,7 +70,7 @@ func PartialUpdateWinner(c *fiber.Ctx) error {
 
 func DeleteWinner(c *fiber.Ctx) error {
 	id := c.Params("id")
-	success := services.DeleteWinnerService(id)
+	success := services.DeleteWinner(id)
 	if !success {
 		return utils.SendApiResponse(c, false, 404, "Winner not found", nil, "Winner not found")
 	}

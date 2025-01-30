@@ -30,3 +30,11 @@ func GetWinners(season, game, position, teamMember string) ([]models.Winner, err
 
 	return winners, nil
 }
+func GetWinnerByID(id string) (*models.Winner, error) {
+	var winner models.Winner
+	// Query the database for the winner by ID
+	if err := database.DB.Where("id = ?", id).First(&winner).Error; err != nil {
+		return nil, err
+	}
+	return &winner, nil
+}

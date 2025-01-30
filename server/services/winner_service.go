@@ -13,7 +13,7 @@ var winners = []models.Winner{
 	{ID: "3", Season: "2025", Game: "FoosBall", Position: "2nd Runners Up", TeamMember1: "Charlie", TeamMember2: "Dave"},
 }
 
-func GetWinnersService(season, game, position, teamMember string) ([]models.Winner, error) {
+func GetWinners(season, game, position, teamMember string) ([]models.Winner, error) {
 	// Get the winners from the repository
 	winners, err := repositories.GetWinners(season, game, position, teamMember)
 	if err != nil {
@@ -22,22 +22,17 @@ func GetWinnersService(season, game, position, teamMember string) ([]models.Winn
 	return winners, nil
 }
 
-func GetWinnerByIDService(id string) *models.Winner {
-	for _, w := range winners {
-		if w.ID == id {
-			return &w
-		}
-	}
-	return nil
+func GetWinnerByID(id string) (*models.Winner, error) {
+	return repositories.GetWinnerByID(id)
 }
 
-func CreateWinnerService(newWinner *models.Winner) models.Winner {
+func CreateWinner(newWinner *models.Winner) models.Winner {
 	newWinner.ID = uuid.New().String()
 	winners = append(winners, *newWinner)
 	return *newWinner
 }
 
-func UpdateWinnerService(id string, updatedWinner *models.Winner) *models.Winner {
+func UpdateWinner(id string, updatedWinner *models.Winner) *models.Winner {
 	for i, w := range winners {
 		if w.ID == id {
 			updatedWinner.ID = w.ID
@@ -48,7 +43,7 @@ func UpdateWinnerService(id string, updatedWinner *models.Winner) *models.Winner
 	return nil
 }
 
-func PartialUpdateWinnerService(id string, partialWinner map[string]interface{}) *models.Winner {
+func PartialUpdateWinner(id string, partialWinner map[string]interface{}) *models.Winner {
 	for i, w := range winners {
 		if w.ID == id {
 			if val, ok := partialWinner["season"]; ok {
@@ -73,7 +68,7 @@ func PartialUpdateWinnerService(id string, partialWinner map[string]interface{})
 	return nil
 }
 
-func DeleteWinnerService(id string) bool {
+func DeleteWinner(id string) bool {
 	for i, w := range winners {
 		if w.ID == id {
 			winners = append(winners[:i], winners[i+1:]...)
