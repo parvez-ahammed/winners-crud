@@ -30,25 +30,30 @@ func GetWinnerByID(c *fiber.Ctx) error {
 }
 
 func CreateWinner(c *fiber.Ctx) error {
-	var newWinner models.Winner
-	if err := c.BodyParser(&newWinner); err != nil {
-		return utils.SendApiResponse(c, false, 400, "Invalid input", nil, err.Error())
+	var winner models.Winner
+
+	if err := c.BodyParser(&winner); err != nil {
+		return utils.SendApiResponse(c, false, 400, "Invalid request body", nil, err.Error())
 	}
 
-	createdWinner := services.CreateWinner(&newWinner)
-	return utils.SendApiResponse(c, true, 201, "Winner created successfully", createdWinner, nil)
+	if err := services.CreateWinner(&winner); err != nil {
+		return utils.SendApiResponse(c, false, 500, "Failed to create winner", nil, err.Error())
+	}
+
+	return utils.SendApiResponse(c, true, 201, "Winner created successfully", winner, nil)
 }
 
 func UpdateWinner(c *fiber.Ctx) error {
 	id := c.Params("id")
 	var updatedWinner models.Winner
+
 	if err := c.BodyParser(&updatedWinner); err != nil {
 		return utils.SendApiResponse(c, false, 400, "Invalid input", nil, err.Error())
 	}
 
-	updated := services.UpdateWinner(id, &updatedWinner)
-	if updated == nil {
-		return utils.SendApiResponse(c, false, 404, "Winner not found", nil, "Winner not found")
+	updated, err := services.UpdateWinner(id, &updatedWinner)
+	if err != nil {
+		return utils.SendApiResponse(c, false, 404, "Winner not found", nil, err.Error())
 	}
 
 	return utils.SendApiResponse(c, true, 200, "Winner updated successfully", updated, nil)
@@ -57,22 +62,24 @@ func UpdateWinner(c *fiber.Ctx) error {
 func PartialUpdateWinner(c *fiber.Ctx) error {
 	id := c.Params("id")
 	var partialWinner map[string]interface{}
+
 	if err := c.BodyParser(&partialWinner); err != nil {
 		return utils.SendApiResponse(c, false, 400, "Invalid input", nil, err.Error())
 	}
 
-	updated := services.PartialUpdateWinner(id, partialWinner)
-	if updated == nil {
-		return utils.SendApiResponse(c, false, 404, "Winner not found", nil, "Winner not found")
+	updated, err := services.PartialUpdateWinner(id, partialWinner)
+	if err != nil {
+		return utils.SendApiResponse(c, false, 404, "Winner not found", nil, err.Error())
 	}
 	return utils.SendApiResponse(c, true, 200, "Winner partially updated successfully", updated, nil)
 }
 
 func DeleteWinner(c *fiber.Ctx) error {
 	id := c.Params("id")
-	success := services.DeleteWinner(id)
-	if !success {
-		return utils.SendApiResponse(c, false, 404, "Winner not found", nil, "Winner not found")
+
+	success, err := services.DeleteWinner(id)
+	if err != nil {
+		return utils.SendApiResponse(c, false, 404, "Winner not found", nil, err.Error())
 	}
-	return utils.SendApiResponse(c, true, 204, "Winner deleted successfully", nil, nil)
+	return utils.SendApiResponse(c, true, 204, "Winner deleted successfully", success, nil)
 }

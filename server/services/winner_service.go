@@ -1,20 +1,12 @@
-// winner_service.go
 package services
 
 import (
-	"github.com/google/uuid"
 	"github.com/piru72/winners-crud/server/database/models"
 	"github.com/piru72/winners-crud/server/database/repositories"
+	"github.com/pkg/errors"
 )
 
-var winners = []models.Winner{
-	{ID: "1", Season: "2024", Game: "Chess", Position: "Champion", TeamMember1: "Alice", TeamMember2: "Bob"},
-	{ID: "2", Season: "2024", Game: "UNO", Position: "1st Runners Up", TeamMember1: "Bob", TeamMember2: "Charlie"},
-	{ID: "3", Season: "2025", Game: "FoosBall", Position: "2nd Runners Up", TeamMember1: "Charlie", TeamMember2: "Dave"},
-}
-
 func GetWinners(season, game, position, teamMember string) ([]models.Winner, error) {
-	// Get the winners from the repository
 	winners, err := repositories.GetWinners(season, game, position, teamMember)
 	if err != nil {
 		return nil, err
@@ -26,54 +18,70 @@ func GetWinnerByID(id string) (*models.Winner, error) {
 	return repositories.GetWinnerByID(id)
 }
 
-func CreateWinner(newWinner *models.Winner) models.Winner {
-	newWinner.ID = uuid.New().String()
-	winners = append(winners, *newWinner)
-	return *newWinner
+func CreateWinner(winner *models.Winner) error {
+	return repositories.CreateWinner(winner)
 }
 
-func UpdateWinner(id string, updatedWinner *models.Winner) *models.Winner {
-	for i, w := range winners {
-		if w.ID == id {
-			updatedWinner.ID = w.ID
-			winners[i] = *updatedWinner
-			return updatedWinner
-		}
+func UpdateWinner(id string, updatedWinner *models.Winner) (*models.Winner, error) {
+	existingWinner, err := repositories.GetWinnerByID(id)
+	if err != nil {
+		return nil, errors.Wrap(err, "winner not found")
 	}
-	return nil
+
+	existingWinner.Season = updatedWinner.Season
+	existingWinner.Game = updatedWinner.Game
+	existingWinner.Position = updatedWinner.Position
+	existingWinner.TeamMember1 = updatedWinner.TeamMember1
+	existingWinner.TeamMember2 = updatedWinner.TeamMember2
+
+	updated, err := repositories.UpdateWinner(id, existingWinner)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to update winner")
+	}
+
+	return updated, nil
 }
 
-func PartialUpdateWinner(id string, partialWinner map[string]interface{}) *models.Winner {
-	for i, w := range winners {
-		if w.ID == id {
-			if val, ok := partialWinner["season"]; ok {
-				w.Season = val.(string)
-			}
-			if val, ok := partialWinner["game"]; ok {
-				w.Game = val.(string)
-			}
-			if val, ok := partialWinner["position"]; ok {
-				w.Position = val.(string)
-			}
-			if val, ok := partialWinner["teamMember1"]; ok {
-				w.TeamMember1 = val.(string)
-			}
-			if val, ok := partialWinner["teamMember2"]; ok {
-				w.TeamMember2 = val.(string)
-			}
-			winners[i] = w
-			return &w
-		}
+func PartialUpdateWinner(id string, partialWinner map[string]interface{}) (*models.Winner, error) {
+	existingWinner, err := repositories.GetWinnerByID(id)
+	if err != nil {
+		return nil, errors.Wrap(err, "winner not found")
 	}
-	return nil
+
+	if season, ok := partialWinner["season"]; ok {
+		existingWinner.Season = season.(string)
+	}
+	if game, ok := partialWinner["game"]; ok {
+		existingWinner.Game = game.(string)
+	}
+	if position, ok := partialWinner["position"]; ok {
+		existingWinner.Position = position.(string)
+	}
+	if teamMember1, ok := partialWinner["teamMember1"]; ok {
+		existingWinner.TeamMember1 = teamMember1.(string)
+	}
+	if teamMember2, ok := partialWinner["teamMember2"]; ok {
+		existingWinner.TeamMember2 = teamMember2.(string)
+	}
+
+	updated, err := repositories.UpdateWinner(id, existingWinner)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to partially update winner")
+	}
+
+	return updated, nil
 }
 
-func DeleteWinner(id string) bool {
-	for i, w := range winners {
-		if w.ID == id {
-			winners = append(winners[:i], winners[i+1:]...)
-			return true
-		}
+func DeleteWinner(id string) (bool, error) {
+	_, err := repositories.GetWinnerByID(id)
+	if err != nil {
+		return false, errors.Wrap(err, "winner not found")
 	}
-	return false
+
+	err = repositories.DeleteWinner(id)
+	if err != nil {
+		return false, errors.Wrap(err, "failed to delete winner")
+	}
+
+	return true, nil
 }

@@ -32,9 +32,54 @@ func GetWinners(season, game, position, teamMember string) ([]models.Winner, err
 }
 func GetWinnerByID(id string) (*models.Winner, error) {
 	var winner models.Winner
-	// Query the database for the winner by ID
 	if err := database.DB.Where("id = ?", id).First(&winner).Error; err != nil {
 		return nil, err
 	}
 	return &winner, nil
+}
+
+func CreateWinner(winner *models.Winner) error {
+	if err := database.DB.Create(winner).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func UpdateWinner(id string, updatedWinner *models.Winner) (*models.Winner, error) {
+	var winner models.Winner
+	if err := database.DB.Where("id = ?", id).First(&winner).Error; err != nil {
+		return nil, err
+	}
+
+	if err := database.DB.Model(&winner).Updates(updatedWinner).Error; err != nil {
+		return nil, err
+	}
+
+	return &winner, nil
+}
+
+func PartialUpdateWinner(id string, updates map[string]interface{}) (*models.Winner, error) {
+	var winner models.Winner
+	if err := database.DB.Where("id = ?", id).First(&winner).Error; err != nil {
+		return nil, err
+	}
+
+	if err := database.DB.Model(&winner).Updates(updates).Error; err != nil {
+		return nil, err
+	}
+
+	return &winner, nil
+}
+
+func DeleteWinner(id string) error {
+	var winner models.Winner
+	if err := database.DB.Where("id = ?", id).First(&winner).Error; err != nil {
+		return err
+	}
+
+	if err := database.DB.Delete(&winner).Error; err != nil {
+		return err
+	}
+
+	return nil
 }
