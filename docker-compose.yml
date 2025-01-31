@@ -1,45 +1,45 @@
 services:
   client:
-    container_name: winner-crud-client
+    container_name: ${PROJECT_NAME}_client
     build:
       context: .
       dockerfile: /client/Dockerfile
     working_dir: /app/client
     ports:
-      - '5173:5173'
+      - '${CLIENT_PORT}:${CLIENT_PORT}'
     environment:
-      - APP_PORT=3000
+      - CLIENT_PORT=${CLIENT_PORT}
     volumes:
       - ./client:/app/client
       - /app/client/node_modules
     command: 'npm run dev'
   db:
     image: postgres:10-alpine
-    container_name: winner-crud-db
+    container_name: ${PROJECT_NAME}_db
     networks:
       - winner-crud-net
     ports:
-      - '5432:5432'
+      - '${DB_PORT}:5432'
     environment:
-      POSTGRES_USER: user1
-      POSTGRES_PASSWORD: password1
-      POSTGRES_DB: winner_crud
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
     volumes:
       - db-data:/var/lib/postgresql/data
 
-  admin:
+  pgadmin:
     image: dpage/pgadmin4
-    container_name: winner-crud-admin
+    container_name: ${PROJECT_NAME}_pgadmin
     restart: always
     depends_on:
       - db
     networks:
       - winner-crud-net
     ports:
-      - '5050:80'
+      - '${PGADMIN_PORT}:80'
     environment:
-      PGADMIN_DEFAULT_EMAIL: example@gmail.com
-      PGADMIN_DEFAULT_PASSWORD: password
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
   # Currently does not support hot reload
   # Related issue:
   # https://github.com/air-verse/air/issues/274
