@@ -20,11 +20,11 @@ func SeedWinner(db *gorm.DB) {
 		}
 
 		if err := db.Create(&winners).Error; err != nil {
-			log.Fatalf("❌ Error seeding data: %v", err)
+			log.Fatalf("Error seeding data: %v", err)
 		}
 
-		log.Println("✅ Seed data inserted successfully")
+		log.Println("Seed data inserted successfully")
 	} else {
-		log.Println("⚡ Database already seeded")
+		log.Println("Database already seeded")
 	}
 }

@@ -12,6 +12,13 @@ import (
 
 var DB *gorm.DB
 
+func getEnvWithFallBack(key, fallback string) string {
+	value := os.Getenv(key)
+	if value == "" {
+		return fallback
+	}
+	return value
+}
 func Connect() {
 
 	// Load environment variables from .env file
@@ -21,13 +28,13 @@ func Connect() {
 	}
 
 	// Read database config from environment variables
-	host := os.Getenv("DB_HOST")
-	user := os.Getenv("DB_USER")
-	password := os.Getenv("DB_PASSWORD")
-	dbName := os.Getenv("DB_NAME")
-	port := os.Getenv("DB_PORT")
-	sslMode := os.Getenv("DB_SSLMODE")
-	timeZone := os.Getenv("DB_TIMEZONE")
+	host := getEnvWithFallBack("DB_HOST", "localhost")
+	user := getEnvWithFallBack("DB_USER", "postgres")
+	password := getEnvWithFallBack("DB_PASSWORD", "password")
+	dbName := getEnvWithFallBack("DB_NAME", "winners")
+	port := getEnvWithFallBack("DB_PORT", "5432")
+	sslMode := getEnvWithFallBack("DB_SSLMODE", "disable")
+	timeZone := getEnvWithFallBack("DB_TIMEZONE", "Asia/Kolkata")
 
 	// Construct DSN
 	dsn := "host=" + host +
